@@ -1,27 +1,323 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/forms";
+
+@custom-variant dark (&:where(.dark, .dark *));
+ 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@theme {
+  /* Custom gold color palette */
+  --color-gold-50:  #faf6e4;
+  --color-gold-100: #f4e8c2;
+  --color-gold-200: #ead089;
+  --color-gold-300: #ddb84e;
+  --color-gold-400: #d2a930;
+  --color-gold-500: #C9A227; /* <-- BASE GOLD */
+  --color-gold-600: #a88320;
+  --color-gold-700: #826419;
+  --color-gold-800: #5b4612;
+  --color-gold-900: #372a0b;
+  --color-gold-950: #1b1505;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  /* Animation keyframes */
+  --animate-hide: hide 150ms cubic-bezier(0.16, 1, 0.3, 1);
+  --animate-slide-down-and-fade: slideDownAndFade 150ms
+    cubic-bezier(0.16, 1, 0.3, 1);
+  --animate-slide-left-and-fade: slideLeftAndFade 150ms
+    cubic-bezier(0.16, 1, 0.3, 1);
+  --animate-slide-up-and-fade: slideUpAndFade 150ms
+    cubic-bezier(0.16, 1, 0.3, 1);
+  --animate-slide-right-and-fade: slideRightAndFade 150ms
+    cubic-bezier(0.16, 1, 0.3, 1);
+  --animate-accordion-open: accordionOpen 150ms cubic-bezier(0.87, 0, 0.13, 1);
+  --animate-accordion-close: accordionClose 150ms cubic-bezier(0.87, 0, 0.13, 1);
+  --animate-dialog-overlay-show: dialogOverlayShow 150ms
+    cubic-bezier(0.16, 1, 0.3, 1);
+  --animate-dialog-content-show: dialogContentShow 150ms
+    cubic-bezier(0.16, 1, 0.3, 1);
+  --animate-drawer-slide-left-and-fade: drawerSlideLeftAndFade 150ms
+    cubic-bezier(0.16, 1, 0.3, 1);
+  --animate-drawer-slide-right-and-fade: drawerSlideRightAndFade 150ms ease-in;
+
+  @keyframes hide {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
+  }
+  @keyframes slideDownAndFade {
+    from {
+      opacity: 0;
+      transform: translateY(-6px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @keyframes slideLeftAndFade {
+    from {
+      opacity: 0;
+      transform: translateX(6px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  @keyframes slideUpAndFade {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @keyframes slideRightAndFade {
+    from {
+      opacity: 0;
+      transform: translateX(-6px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  @keyframes accordionOpen {
+    from {
+      height: 0px;
+    }
+    to {
+      height: var(--radix-accordion-content-height);
+    }
+  }
+  @keyframes accordionClose {
+    from {
+      height: var(--radix-accordion-content-height);
+    }
+    to {
+      height: 0px;
+    }
+  }
+  @keyframes dialogOverlayShow {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  @keyframes dialogContentShow {
+    from {
+      opacity: 0;
+      transform: translate(-50%, -45%) scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+  }
+  @keyframes drawerSlideLeftAndFade {
+    from {
+      opacity: 0;
+      transform: translateX(100%);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  @keyframes drawerSlideRightAndFade {
+    from {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    to {
+      opacity: 0;
+      transform: translateX(100%);
+    }
   }
 }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+/* Base layer for theme variables */
+@layer base {
+  :root {
+    /* Light mode colors */
+    --background: 0 0% 100%; /* white */
+    --foreground: 224 71% 4%; /* gray-950 */
+    --card: 0 0% 100%;
+    --card-foreground: 224 71% 4%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 224 71% 4%;
+    --primary: 35 96% 49%; /* gold-500 */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 220 14% 96%; /* gray-100 */
+    --secondary-foreground: 220 9% 46%;
+    --muted: 220 14% 96%;
+    --muted-foreground: 220 9% 46%;
+    --accent: 35 96% 49%; /* gold-500 */
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 220 13% 91%; /* gray-200 */
+    --input: 220 13% 91%;
+    --ring: 35 96% 49%; /* gold-500 */
+    
+    /* Tremor theme colors */
+    --tremor-brand: 35 96% 49%; /* gold-500 */
+    --tremor-background-default: 0 0% 100%;
+    --tremor-background-subtle: 220 14% 96%;
+    --tremor-background-muted: 220 16% 98%;
+    --tremor-content-default: 220 9% 46%;
+    --tremor-content-strong: 224 71% 4%;
+    --tremor-border-default: 220 13% 91%;
+  }
+
+  .dark {
+    /* Dark mode colors */
+    --background: 224 71% 4%; /* gray-950 */
+    --foreground: 210 40% 98%; /* gray-50 */
+    --card: 224 71% 4%;
+    --card-foreground: 210 40% 98%;
+    --popover: 224 71% 4%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 35 96% 49%; /* gold-500 */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 217 33% 17%; /* gray-800 */
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217 33% 17%;
+    --muted-foreground: 215 20% 65%;
+    --accent: 32 95% 44%; /* gold-600 */
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 62% 30%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217 33% 17%; /* gray-800 */
+    --input: 217 33% 17%;
+    --ring: 32 95% 44%; /* gold-600 */
+    
+    /* Tremor theme colors for dark mode */
+    --tremor-brand: 32 95% 44%; /* gold-600 */
+    --tremor-background-default: 224 71% 4%;
+    --tremor-background-subtle: 217 33% 17%;
+    --tremor-background-muted: 215 28% 17%;
+    --tremor-content-default: 213 31% 91%;
+    --tremor-content-strong: 210 40% 98%;
+    --tremor-border-default: 217 33% 17%;
+  }
 }
 
+/* Utility classes for gold theme */
 @layer utilities {
-  .text-balance {
-    text-wrap: balance;
+  /* Text colors */
+  .text-gold {
+    color: var(--color-gold-500);
+  }
+  .dark .text-gold {
+    color: var(--color-gold-400);
+  }
+  
+  /* Background colors */
+  .bg-gold {
+    background-color: var(--color-gold-500);
+  }
+  .dark .bg-gold {
+    background-color: var(--color-gold-600);
+  }
+  
+  /* Border colors */
+  .border-gold {
+    border-color: var(--color-gold-500);
+  }
+  .dark .border-gold {
+    border-color: var(--color-gold-600);
+  }
+  
+  /* Hover states */
+  .hover\:bg-gold:hover {
+    background-color: var(--color-gold-600);
+  }
+  .dark .hover\:bg-gold:hover {
+    background-color: var(--color-gold-700);
+  }
+  
+  /* Focus states */
+  .focus\:ring-gold:focus {
+    --tw-ring-color: var(--color-gold-500);
+  }
+  .dark .focus\:ring-gold:focus {
+    --tw-ring-color: var(--color-gold-600);
+  }
+}
+
+/* Tremor component overrides */
+@layer components {
+  /* Card styling */
+  .tremor-Card-root {
+    @apply bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-800;
+  }
+  
+  /* Table styling */
+  .tremor-TableCell-root {
+    @apply text-gray-700 dark:text-gray-300;
+  }
+  
+  .tremor-TableHeaderCell-root {
+    @apply text-gray-900 dark:text-gray-100 border-gray-200 dark:border-gray-700;
+  }
+  
+  /* Button with gold accent */
+  .tremor-Button-root[data-variant="primary"] {
+    @apply bg-gold-500 hover:bg-gold-600 dark:bg-gold-600 dark:hover:bg-gold-700;
+  }
+  
+  /* Metric with gold color */
+  .tremor-Metric-root {
+    @apply text-gray-900 dark:text-gray-100;
+  }
+  
+  .tremor-Metric-root.text-gold {
+    @apply text-gold-500 dark:text-gold-400;
+  }
+  
+  /* Chart colors */
+  .tremor-BarChart-bar[data-color="gold"],
+  .tremor-LineChart-line[data-color="gold"],
+  .tremor-AreaChart-area[data-color="gold"] {
+    fill: var(--color-gold-500);
+    stroke: var(--color-gold-500);
+  }
+  
+  .dark .tremor-BarChart-bar[data-color="gold"],
+  .dark .tremor-LineChart-line[data-color="gold"],
+  .dark .tremor-AreaChart-area[data-color="gold"] {
+    fill: var(--color-gold-400);
+    stroke: var(--color-gold-400);
+  }
+}
+
+/* Custom scrollbar styling */
+@layer utilities {
+  /* Light mode scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    @apply bg-gray-100 dark:bg-gray-800;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    @apply bg-gold-400 dark:bg-gold-600 rounded-full;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-gold-500 dark:bg-gold-700;
   }
 }
