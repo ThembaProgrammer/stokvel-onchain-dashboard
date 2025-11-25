@@ -6,6 +6,7 @@ import {
 import {
     EllipsisVerticalIcon,
 } from "@heroicons/react/24/outline";
+import Image from "next/image";
 
 export default function AfrocoinOwnership() {
     const ownershipPercentage = 22.5;
@@ -46,7 +47,7 @@ export default function AfrocoinOwnership() {
                         />
                     </svg>
                     <div className="absolute inset-0 flex flex-col items-center justify-center">
-                        <img 
+                        <Image 
                             src='https://isibaya.afrocoin.xyz/ipfs/QmeWovr3UPVJUhYCWAHGcNrxCqCsPCebvQNUu4Lvou6Q4V/obverse.png' 
                             height={150} 
                             width={150}

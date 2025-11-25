@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import localFont from "next/font/local";
 import { GeistSans } from "geist/font/sans"; // import font
 import "./globals.css";
 import { ThemeProvider } from "@/components/providers/theme-provider";

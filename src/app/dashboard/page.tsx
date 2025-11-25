@@ -5,7 +5,6 @@ import {
   Metric,
   Text,
   Flex,
-  Title,
 } from "@tremor/react";
 import {
   ChartBarIcon,
@@ -14,13 +13,10 @@ import {
   Bars3Icon,
   MagnifyingGlassIcon,
   BellIcon,
-  MoonIcon,
   ChevronDownIcon,
-  EllipsisVerticalIcon,
 } from "@heroicons/react/24/outline";
 import ActivityTable from "@/components/activity-table";
 import { ThemeToggle } from "@/components/theme-toggle";
-import { BarChart } from "@/components/BarChart";
 import { BarChartAxisLabelsExample } from "@/components/bar-example";
 import AfrocoinOwnership from "@/components/asset-ownership";
 
