@@ -1,5 +1,6 @@
-// 'use client';
+'use client';
 
+import { useState } from 'react';
 import { blockExploreTxLink, formatAddress } from '@/lib/utils/format';
 import {
     Table,
@@ -9,6 +10,7 @@ import {
     TableHeaderCell,
     TableRow,
 } from '@tremor/react';
+import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/outline';
 
 function classNames(...classes: string[]) {
     return classes.filter(Boolean).join(' ');
@@ -98,6 +100,12 @@ const data = [
 ];
 
 export default function Example() {
+    const [expandedRow, setExpandedRow] = useState<string | null>(null);
+
+    const toggleRow = (txHash: string) => {
+        setExpandedRow(expandedRow === txHash ? null : txHash);
+    };
+
     return (
         <>
             <div className="sm:flex sm:items-center sm:justify-between sm:space-x-10">
@@ -116,7 +124,84 @@ export default function Example() {
                     filter
                 </button>
             </div>
-            <Table className="mt-8">
+
+            {/* Mobile View - Expandable Cards */}
+            <div className="mt-6 space-y-3 md:hidden">
+                {data.map((item) => (
+                    <div key={item.txHash} className="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
+                        {/* Clickable Row Header */}
+                        <button
+                            onClick={() => toggleRow(item.txHash)}
+                            className="w-full px-4 py-3 flex items-center justify-between bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+                        >
+                            <div className="flex-1 text-left">
+                                <div className="flex items-center justify-between mb-2">
+                                    <span className="text-sm font-medium text-gray-900 dark:text-gray-100">
+                                        {formatAddress(item.txHash)}
+                                    </span>
+                                    <span
+                                        className={classNames(
+                                            item.txType === 'Coin purchase'
+                                                ? 'bg-gold-100 text-gold-800 ring-gold-600/10 dark:bg-gold-500/20 dark:text-gold-500 dark:ring-gold-400/20'
+                                                : 'bg-emerald-100 text-emerald-800 ring-emerald-600/10 dark:bg-emerald-500/20 dark:text-emerald-500 dark:ring-emerald-400/20',
+                                            'inline-flex items-center rounded px-2 py-0.5 text-xs font-medium ring-1 ring-inset',
+                                        )}
+                                    >
+                                        {item.txType}
+                                    </span>
+                                </div>
+                                <div className="flex items-center justify-between">
+                                    <span className="text-sm text-gray-600 dark:text-gray-400">{item.from}</span>
+                                    <span className="text-sm font-semibold text-gray-900 dark:text-gray-100">{item.zarAmount}</span>
+                                </div>
+                            </div>
+                            <div className="ml-3">
+                                {expandedRow === item.txHash ? (
+                                    <ChevronUpIcon className="w-5 h-5 text-gray-400" />
+                                ) : (
+                                    <ChevronDownIcon className="w-5 h-5 text-gray-400" />
+                                )}
+                            </div>
+                        </button>
+
+                        {/* Expanded Details */}
+                        {expandedRow === item.txHash && (
+                            <div className="px-4 py-3 bg-gray-50 dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700 space-y-2">
+                                <div className="flex justify-between">
+                                    <span className="text-xs text-gray-500 dark:text-gray-400">Transaction ID:</span>
+                                    <a 
+                                        className="text-xs text-blue-500 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300" 
+                                        href={blockExploreTxLink(item.txHash)} 
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
+                                        {formatAddress(item.txHash)}
+                                    </a>
+                                </div>
+                                <div className="flex justify-between">
+                                    <span className="text-xs text-gray-500 dark:text-gray-400">From:</span>
+                                    <span className="text-xs text-gray-900 dark:text-gray-100">{item.from}</span>
+                                </div>
+                                <div className="flex justify-between">
+                                    <span className="text-xs text-gray-500 dark:text-gray-400">To:</span>
+                                    <span className="text-xs text-gray-900 dark:text-gray-100">{item.recipient}</span>
+                                </div>
+                                <div className="flex justify-between">
+                                    <span className="text-xs text-gray-500 dark:text-gray-400">Token Received:</span>
+                                    <span className="text-xs text-gray-900 dark:text-gray-100">{item.tokenAmount}</span>
+                                </div>
+                                <div className="flex justify-between">
+                                    <span className="text-xs text-gray-500 dark:text-gray-400">Date & Time:</span>
+                                    <span className="text-xs text-gray-900 dark:text-gray-100">{item.dateTime}</span>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                ))}
+            </div>
+
+            {/* Desktop View - Table */}
+            <Table className="mt-8 hidden md:table">
                 <TableHead>
                     <TableRow className="border-b border-tremor-border dark:border-dark-tremor-border">
                         <TableHeaderCell className="text-tremor-content-strong dark:text-dark-tremor-content-strong">
@@ -146,7 +231,7 @@ export default function Example() {
                     {data.map((item) => (
                         <TableRow key={item.txHash}>
                             <TableCell className="font-medium text-tremor-content-strong dark:text-dark-tremor-content-strong">
-                                <a className='text-blue-500 hover:text-blue-700' href={blockExploreTxLink(item.txHash)} target='_blank'>{formatAddress(item.txHash)}</a>
+                                <a className='text-blue-500 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300' href={blockExploreTxLink(item.txHash)} target='_blank' rel="noopener noreferrer">{formatAddress(item.txHash)}</a>
                             </TableCell>
                             <TableCell>{item.from}</TableCell>
                             <TableCell>{item.recipient}</TableCell>
